@@ -1,20 +1,28 @@
 <template>
   <Header />
-  <Home />
+  <RouterView />
   <Footer />
 </template>
 
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Home from '@/pages/Home.vue'
+import store from './store';
 
 export default {
   name: 'App',
   components: {
     Header,
-    Home,
     Footer
+  },
+
+  setup() {
+    const id = sessionStorage.getItem("id");
+
+    if(id) {
+      store.commit("setAccount", id)
+    }
+
   }
 }
 </script>

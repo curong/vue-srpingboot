@@ -10,11 +10,15 @@
               to some social networking sites or contact information.</p>
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
-            <h4 class="text-white">Contact</h4>
+            <h4 class="text-white">사이트맵</h4>
             <ul class="list-unstyled">
-              <li><a href="#" class="text-white">Follow on Twitter</a></li>
-              <li><a href="#" class="text-white">Like on Facebook</a></li>
-              <li><a href="#" class="text-white">Email me</a></li>
+              <li>
+                <router-link to="/">메인화면</router-link>
+              </li>
+              <li>
+                <router-link to="/login" v-if="!$store.state.account.id" class="text-primary">로그인</router-link>
+                <a @click="logout()" v-else class="text-primary">로그아웃</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -41,8 +45,28 @@
 </template>
 
 <script>
+import router from '@/router';
+import store from '@/store';
+
 export default {
-  name: 'Header'
+  name: 'Header',
+
+  setup() {
+    const logout = () => {
+      
+      // 로그아웃 시 vuex store의 정보값을 초기화
+      store.commit('setAccount', 0);
+
+      // session storage 값 제거
+      sessionStorage.removeItem("id");
+
+      // router 이동
+      router.push({ path: "/" });
+    }
+
+    return { logout }
+  },
+
 }
 </script>
 
