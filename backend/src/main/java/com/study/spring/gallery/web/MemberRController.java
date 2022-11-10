@@ -47,7 +47,7 @@ public class MemberRController {
       cookie.setPath("/");
 
       res.addCookie(cookie);
-      return ResponseEntity.ok().build();
+      return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     // 아이디 정보가 없을 경우 thorw 처리
