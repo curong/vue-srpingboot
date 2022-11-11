@@ -5,13 +5,12 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.DataFormatException;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 public class JwtServiceImpl implements JwtService{
 
@@ -40,5 +39,21 @@ public class JwtServiceImpl implements JwtService{
 
     return builder.compact();
   }
-  
+
+  @Override
+  public Claims getClaims(String token) {
+    if (token != null) {
+      try {
+        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
+        Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());
+        Claims claims = Jwts.parserBuilder().setSigningKey(signKey).build().parseClaimsJws(token).getBody();
+        return claims;
+      } catch (ExpiredJwtException e) {
+          // 만료됨
+      } catch (JwtException e) {
+        // 유효하지 않음
+      }
+    }
+    return null;
+  }
 }
