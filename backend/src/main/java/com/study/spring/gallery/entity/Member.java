@@ -7,10 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
 import lombok.Getter;
 
+@Data
 @Entity
-@Getter
 @Table(name = "member")
 public class Member {
 

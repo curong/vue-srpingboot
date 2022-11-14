@@ -1,10 +1,11 @@
 package com.study.spring.gallery.entity;
 
+import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
 
-@Getter
+@Data
 @Entity
 @Table(name = "carts")
 public class Cart {
@@ -17,6 +18,6 @@ public class Cart {
   private int memberId;
 
   @Column(name = "item_id")
-  private String itemId;
+  private int itemId;
 
 }
