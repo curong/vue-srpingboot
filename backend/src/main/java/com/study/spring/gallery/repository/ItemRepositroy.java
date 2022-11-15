@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ItemRepositroy extends JpaRepository<Item, Integer>{
-    List<Item> findByIdIn(List<Integer> ids);
+    List<Item> findByPidIn(List<Integer> ids);
 }

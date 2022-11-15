@@ -22,7 +22,7 @@ public class Item {
   @Column(length = 50, nullable = false)
   private String name;
 
-  @Column(name = "imgPath")
+  @Column(name = "img_path")
   private String imgPath;
 
   @Column(name = "price")

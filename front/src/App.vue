@@ -23,7 +23,7 @@ export default {
 
     const check = () => {
       axios.get("/api/account/check").then( ({data}) => {
-        console.log(data)
+        console.log(`로그인 PID 정보값 : ${data}`)
         store.commit("setAccount", data || 0);
       })
     }

@@ -16,14 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class GalleryRController {
-
-  @Autowired
-  private ItemRepositroy itemRepositroy;
+  private final ItemRepositroy itemRepositroy;
 
   @GetMapping("/items")
   public List<Item> getItems() {
-    List<Item> items = itemRepositroy.findAll();
-    return items;
+    return itemRepositroy.findAll();
   }
 
 }
