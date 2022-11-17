@@ -1,7 +1,6 @@
 <template>
   <div class="col">
     <div class="card shadow-sm">
-      <!-- <span class="img" :style="{ backgroundImage: `url (${item.imgPath})` }"></span> -->
       <img :src="item.imgPath" :alt="item.name">
       <div class="card-body">
         <p class="card-text"> {{ item.name }}

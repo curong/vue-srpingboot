@@ -6,7 +6,7 @@ import CartView from "@/pages/cart/CartView";
 const routes = [
     {path: '/', name: 'HomeView', component: HomeView},
     {path: '/login', name: 'LoginView', component: LoginView},
-    {path: '/cart', name: CartView, component: CartView}
+    {path: '/cart', name: CartView, component: CartView},
     // ,
     // {
     //   path: '/about',

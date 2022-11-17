@@ -7,7 +7,6 @@ import com.study.spring.gallery.entity.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Integer> {
-
   Member findByEmailAndPassword(String email, String password);
 
 }
