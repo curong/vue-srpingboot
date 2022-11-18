@@ -7,7 +7,7 @@
           <img :src="i.imgPath" width="200" height="200" alt="장바구니 추가 아이템 이미지">
           <span class="name">{{ i.name }}</span>
           <span class="price">{{ lib.addComma(i.price - (i.price * i.discountPer / 100)) }}</span>
-          <button>취소</button>
+          <i class="fa fa-trash"></i>
         </li>
       </ul>
     </div>
@@ -60,6 +60,13 @@ export default {
 
 .cart ul li .price {
   margin-left: 25px;
+}
+
+.cart ul li i {
+  float: right;
+  font-size: 20px;
+  margin-top: 65px;
+  margin-right: 50px;
 }
 
 </style>
