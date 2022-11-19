@@ -10,6 +10,9 @@
           <i class="fa fa-trash" @click="remove(i.pid)"></i>
         </li>
       </ul>
+
+      <router-link to="/order" class="btn btn-primary">구입하기</router-link>
+
     </div>
 
   </div>
@@ -81,6 +84,14 @@ export default {
   font-size: 20px;
   margin-top: 65px;
   margin-right: 50px;
+}
+
+.cart .btn {
+  display: block;
+  margin: 0 auto;
+  padding: 30px 50px;
+  font-size: 20px;
+  width: 300px;
 }
 
 </style>
