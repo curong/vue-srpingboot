@@ -7,7 +7,7 @@
           <img :src="i.imgPath" width="200" height="200" alt="장바구니 추가 아이템 이미지">
           <span class="name">{{ i.name }}</span>
           <span class="price">{{ lib.addComma(i.price - (i.price * i.discountPer / 100)) }}</span>
-          <i class="fa fa-trash"></i>
+          <i class="fa fa-trash" @click="remove(i.pid)"></i>
         </li>
       </ul>
     </div>
@@ -26,12 +26,26 @@ export default {
     const state = reactive({
       items: []
     })
+    const load = () => {
+      axios.get(`/api/cart/items`).then(({data}) => {
+        state.items = data;
+      });
+    }
 
-    axios.get(`/api/cart/items`).then(({data}) => {
-      state.items = data;
-    });
+    load();
+    return {state, lib, load}
+  },
+  methods: {
+    remove(itemId)
+    {
+      if ( confirm("정말 삭제하시겠습니까?") )
+      {
+        axios.delete(`/api/cart/items/${itemId}`).then(({data}) => {
+          this.load();
+        })
+      }
+    }
 
-    return {state, lib}
   }
 }
 </script>
