@@ -21,10 +21,11 @@
                   <h6 class="my-0"> {{ i.name }} </h6>
                   <small class="text-danger"> {{ i.discountPer }}% 할인가</small>
                 </div>
-                <span class="text-muted"> {{ lib.addComma(i.price - (i.price * i.discountPer / 100)) }} </span>
+                <span class="text-muted"> {{ lib.addComma(i.price - (i.price * i.discountPer / 100)) }} 원</span>
               </li>
 
             </ul>
+            <h3 class="te total-price">총 금액 : {{ lib.addComma(computedPrice) }} 원</h3>
 
             <form class="card p-2">
               <div class="input-group">
@@ -103,7 +104,7 @@
 </template>
 
 <script>
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib"
 
@@ -114,6 +115,15 @@ export default {
       items: []
     });
 
+    const computedPrice = computed( () => {
+      let result = 0;
+      for (let i of state.items) {
+        result += i.price - i.price * i.discountPer / 100;
+      }
+
+      return result;
+    })
+
     const load = () => {
       axios.get(`/api/cart/items`).then(({data}) => {
         return state.items = data;
@@ -121,7 +131,7 @@ export default {
     }
 
     load();
-    return {state, lib, load}
+    return {state, lib, load, computedPrice}
   },
 
 }
