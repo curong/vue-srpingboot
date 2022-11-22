@@ -15,6 +15,9 @@
               <li>
                 <router-link to="/">메인화면</router-link>
               </li>
+              <li v-if="$store.state.account.id">
+                <router-link to="/orders">주문내역</router-link>
+              </li>
               <li>
                 <router-link to="/login" v-if="!$store.state.account.id" class="text-primary">로그인</router-link>
                 <a @click="logout()" v-else class="text-primary">로그아웃</a>

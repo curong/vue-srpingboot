@@ -3,12 +3,14 @@ import HomeView from '@/pages/HomeView'
 import LoginView from '@/pages/login/LoginView'
 import CartView from "@/pages/cart/CartView";
 import OrderView from "@/pages/order/OrderView";
+import OrdersView from "@/pages/order/OrdersView";
 
 const routes = [
     {path: '/', name: 'HomeView', component: HomeView},
     {path: '/login', name: 'LoginView', component: LoginView},
     {path: '/cart', name: CartView, component: CartView},
-    {path: '/order', name: OrderView, component: OrderView}
+    {path: '/order', name: OrderView, component: OrderView},
+    {path: '/orders', name: OrdersView, component: OrdersView},
 
     // ,
     // {

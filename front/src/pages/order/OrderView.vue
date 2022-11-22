@@ -11,7 +11,7 @@
           <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-primary">장바구니</span>
-              <span class="badge bg-primary rounded-pill">3</span>
+              <span class="badge bg-primary rounded-pill">{{ state.items.length }}</span>
             </h4>
             <ul class="list-group mb-3">
 
@@ -37,7 +37,7 @@
           <div class="col-md-7 col-lg-8">
             <hr class="my-4">
             <h4 class="mb-3">주문자 정보</h4>
-            <form class="needs-validation" novalidate="">
+            <div class="needs-validation" novalidate="">
               <div class="row g-3">
 
 
@@ -45,7 +45,8 @@
                   <label for="username" class="form-label">수하인</label>
                   <div class="input-group has-validation">
                     <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" id="username" placeholder="수하인 성함을 입력해 주세요." required="">
+                    <input type="text" class="form-control" id="username" placeholder="수하인 성함을 입력해 주세요."
+                           v-model="state.form.name">
                     <div class="invalid-feedback">
                       받는분을 입력해 주세요.
                     </div>
@@ -55,7 +56,8 @@
 
                 <div class="col-12">
                   <label for="address" class="form-label">주소</label>
-                  <input type="text" class="form-control" id="address" placeholder="주소를 입력해 주세요." required="">
+                  <input type="text" class="form-control" id="address" placeholder="주소를 입력해 주세요."
+                         v-model="state.form.address">
                   <div class="invalid-feedback">
                     주소를 입력해 주세요.
                   </div>
@@ -71,12 +73,13 @@
 
               <div class="my-3">
                 <div class="form-check">
-                  <input id="credit" name="creditCard" type="radio" class="form-check-input" checked="" required="">
-                  <label class="form-check-label" for="credit">신용카드</label>
+                  <input id="card" name="creditCard" type="radio" class="form-check-input" value="card" v-model="state.form.payment">
+                  <label class="form-check-label" for="card">신용카드</label>
                 </div>
                 <div class="form-check">
-                  <input id="account" name="paymentMethod" type="radio" class="form-check-input" required="">
-                  <label class="form-check-label" for="account">무통장 입금</label>
+                  <input id="bank" name="paymentMethod" type="radio" class="form-check-input" value="bank"
+                         v-model="state.form.payment">
+                  <label class="form-check-label" for="bank">무통장 입금</label>
                 </div>
               </div>
 
@@ -84,16 +87,13 @@
 
                 <div class="col-md-12">
                   <label for="cc-number" class="form-label">카드번호</label>
-                  <input type="text" class="form-control" id="cc-number" placeholder="" required="">
-                  <div class="invalid-feedback">
-                    Credit card number is required
-                  </div>
+                  <input type="text" class="form-control" id="cc-number" v-model="state.form.cardNumber">
                 </div>
 
               </div>
               <hr class="my-4">
-              <button class="w-100 btn btn-primary btn-lg" type="submit">결제하기</button>
-            </form>
+              <button class="w-100 btn btn-primary btn-lg" @click="submit()">결제하기</button>
+            </div>
           </div>
         </div>
       </main>
@@ -112,10 +112,17 @@ export default {
   name: "OrderView",
   setup() {
     const state = reactive({
-      items: []
+      items: [],
+      form: {
+        name: "",
+        address: "",
+        payment: "",
+        cardNumber: "",
+        items: "",
+      }
     });
 
-    const computedPrice = computed( () => {
+    const computedPrice = computed(() => {
       let result = 0;
       for (let i of state.items) {
         result += i.price - i.price * i.discountPer / 100;
@@ -130,8 +137,18 @@ export default {
       });
     }
 
+    const submit = () => {
+      const args = JSON.parse(JSON.stringify(state.form));
+      args.items = JSON.stringify(state.items);
+
+      axios.post(`/api/orders/push`, args).then(() => {
+        console.log(`order submit success`)
+      });
+
+    }
+
     load();
-    return {state, lib, load, computedPrice}
+    return {state, lib, load, computedPrice, submit}
   },
 
 }
