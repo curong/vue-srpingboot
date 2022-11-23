@@ -21,10 +21,9 @@ public class OrderRController {
     private final JwtService jwtService;
     private final OrderRepository orderRepository;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity getOrder
             (
-                    @RequestBody OrderDTO orderDTO,
                     @CookieValue(value = "token", required = false) String token
             ) {
 

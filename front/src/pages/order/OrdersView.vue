@@ -37,7 +37,7 @@ export default {
       orders: [],
     });
 
-    axios.get(`/api/orders`).then(({data}) => {
+    axios.get(`/api/orders/list`).then(({data}) => {
       console.log(data);
       state.orders = data;
     })
