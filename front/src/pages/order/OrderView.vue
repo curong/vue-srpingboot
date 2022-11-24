@@ -142,7 +142,7 @@ export default {
       args.items = JSON.stringify(state.items);
 
       axios.post(`/api/orders/push`, args).then(() => {
-        console.log(`order submit success`)
+        alert('주문이 완료 되었습니다.')
       });
 
     }

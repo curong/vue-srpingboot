@@ -4,7 +4,6 @@ package com.study.spring.gallery.web;
 import com.study.spring.gallery.entity.Member;
 import com.study.spring.gallery.repository.MemberRepository;
 import com.study.spring.gallery.service.JwtService;
-import com.study.spring.gallery.service.JwtServiceImpl;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +44,16 @@ public class MemberRController {
 
         // 아이디 정보가 없을 경우 thorw 처리
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletResponse res) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+        res.addCookie(cookie);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/check")

@@ -3,6 +3,7 @@ package com.study.spring.gallery.web;
 
 import com.study.spring.gallery.dto.OrderDTO;
 import com.study.spring.gallery.entity.Order;
+import com.study.spring.gallery.repository.CartRepository;
 import com.study.spring.gallery.repository.OrderRepository;
 import com.study.spring.gallery.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -20,23 +22,28 @@ public class OrderRController {
 
     private final JwtService jwtService;
     private final OrderRepository orderRepository;
+    private final CartRepository cartRepository;
 
     @GetMapping("/list")
     public ResponseEntity getOrder
             (
                     @CookieValue(value = "token", required = false) String token
-            ) {
+            )
+    {
 
-        if (!jwtService.isValid(token)) {
+        if (!jwtService.isValid(token))
+        {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
-        List<Order> orders = orderRepository.findAll();
+        int memberId = jwtService.getId(token);
+        List<Order> orders = orderRepository.findByMemberIdOrderByPidDesc(memberId);
 
-        return new ResponseEntity<>(orders,HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
 
+    @Transactional
     @PostMapping("push")
     public ResponseEntity pushOrder
             (
@@ -48,7 +55,8 @@ public class OrderRController {
         }
 
         Order newOrder = new Order();
-        newOrder.setMemberId(jwtService.getId(token));
+        int memberId = jwtService.getId(token);
+        newOrder.setMemberId(memberId);
         newOrder.setName(orderDTO.getName());
         newOrder.setAddress(orderDTO.getAddress());
         newOrder.setPayment(orderDTO.getPayment());
@@ -58,6 +66,7 @@ public class OrderRController {
         orderRepository.save(newOrder);
 
 
+        cartRepository.deleteByMemberId(memberId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
